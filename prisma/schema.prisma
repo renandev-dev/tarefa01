@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  papel     String   @default("PROFESSOR")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subjects  Subject[]
+  questions Question[]
+
+  @@map("users")
+}
+
+model Subject {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  ativa       Boolean  @default(true)
+  professorId Int      @map("professor_id")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  professor   User       @relation(fields: [professorId], references: [id])
+  questions   Question[]
+
+  @@map("subjects")
+}
+
+model Question {
+  id              Int      @id @default(autoincrement())
+  enunciado       String
+  dificuldade     Int
+  respostaCorreta String?  @map("resposta_correta")
+  subjectId       Int      @map("disciplina_id")
+  authorId        Int      @map("autor_id")
+  ativa           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  subject         Subject @relation(fields: [subjectId], references: [id])
+  author          User    @relation(fields: [authorId], references: [id])
+
+  @@map("questions")
+}
