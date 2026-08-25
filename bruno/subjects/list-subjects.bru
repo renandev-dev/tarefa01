@@ -1,0 +1,16 @@
+meta {
+  name: Listar Subjects
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/subjects
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+}

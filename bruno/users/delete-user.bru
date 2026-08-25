@@ -1,0 +1,15 @@
+meta {
+  name: Deletar User
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/users/{{userId}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: in [200, 204]
+}
