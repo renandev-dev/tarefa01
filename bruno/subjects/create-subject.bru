@@ -1,0 +1,32 @@
+meta {
+  name: Criar Subject
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/subjects
+  body: json
+  auth: inherit
+}
+
+// professorId = userId salvo pelo create-user.bru (after-response)
+body:json {
+  {
+    "nome": "Programação Web",
+    "descricao": "APIs REST",
+    "professorId": {{userId}}
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.success: eq true
+}
+
+script:after-response {
+  // Salva o ID da matéria criada para usar nas requisições seguintes
+  if (res.body.data && res.body.data.id) {
+    bru.setVar("subjectId", res.body.data.id);
+  }
+}
