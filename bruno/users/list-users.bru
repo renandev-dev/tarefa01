@@ -1,0 +1,16 @@
+meta {
+  name: Listar Users
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/users
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+}

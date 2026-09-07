@@ -1,0 +1,15 @@
+meta {
+  name: Deletar Question
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/questions/{{questionId}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: in [200, 204]
+}
